@@ -1,0 +1,96 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+using System;
+
+public class SetWordController : MonoBehaviour
+{
+
+    //Imports
+    public TextMeshProUGUI user_name;
+    public TMP_InputField user_inputfield;
+
+    //Lists
+    public List<string> writeback_list = new List<string>();
+    public List<string> nameList = new List<string>();
+
+    //Variables
+    char[] separators = new char[] { ' ', '.' };
+    int list_num;
+    string checker;
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            //Gain input and reset most things
+            nameList.Clear();
+            user_name.text = "";
+            writeback_list.Add(user_inputfield.text);
+            string checker = user_inputfield.text;
+            user_inputfield.text = "";
+
+
+            //Make sure the input is lowercase
+            checker = checker.ToLower();
+
+            //Split the input into a list
+            var text = checker;
+            var arr = checker.Split(' ');
+            foreach (var value in arr)
+            {
+                nameList.Add(value);
+            }
+
+
+            if (nameList[0] == ("help"))
+            {
+                writeback_list.Add("\n" + "To plant, example: Plant A1 B3" + "\n" + "To water, example: Water A3 C2" + "\n" + "To harvest, example: Harvest A2 B1" + "\n" + "\n");
+                //user_name.text = ("To plant, example: Plant A1 B3");
+                //user_name.text = ("To water, example: Water A3 C2" + "\n");
+                //user_name.text = ("To harvest, example: Harvest A2 B1" + "\n");
+
+            }
+
+            list_num = nameList.Count;
+            //If the player has selected water, run this
+            if (list_num == 1)
+            {
+                if (nameList[0] == "water")
+                {
+                    writeback_list.Add("Please also enter where you'd like to perform the function, Example: Harvest A1 B3");
+                }
+                if (nameList[0] == "harvest")
+                {
+                    writeback_list.Add("Please also enter where you'd like to perform the function, Example: Harvest A1 B3");
+                }
+                if (nameList[0] == "plant")
+                {
+                    writeback_list.Add("Please also enter where you'd like to perform the function, Example: Harvest A1 B3");
+                }
+
+            }
+            else
+            {
+                if (nameList[0] == ("water"))
+                {
+                    print("You selected water");
+                }
+            }
+     
+
+
+            //Add to list and print new list on the command area
+            foreach (var item in writeback_list)
+            {
+                user_name.text += item.ToString() + "\n";
+            }
+            //Checking so it wont go over the input area
+            if (writeback_list.Count >= 15)
+            {
+                writeback_list.Remove(writeback_list[0]);
+            }
+        }
+    }
+}
