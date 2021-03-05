@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class SetWordController : MonoBehaviour
 {
+    int hour;
 
     //Imports
     public TextMeshProUGUI user_name;
@@ -15,25 +16,799 @@ public class SetWordController : MonoBehaviour
     public List<string> writeback_list = new List<string>();
     public List<string> nameList = new List<string>();
 
-    //Variables
-    char[] separators = new char[] { ' ', '.' };
-    int list_num;
-    string checker;
+    public List<string> callBackList = new List<string>();
+
+    List<string> plantAll = new List<string>()
+    {
+        "carrot_seed_a1" ,
+        "carrot_seed_a2" ,
+        "carrot_seed_a3" ,
+
+        "carrot_seed_b1" ,
+        "carrot_seed_b2" ,
+        "carrot_seed_b3" ,
+
+        "carrot_seed_c1" ,
+        "carrot_seed_c2" ,
+        "carrot_seed_c3" ,
+    };
+
+    //Strings
+    public string checker; //Main input checker
+
+    //water variables
+    float timer = 0.0f;
+    float test = 0;
+
+
+    //inventory
+    public List<string> inventory = new List<string>();
+
+    public int num_call;
+
+    int carrot_seed_count = 0;
+
+    public int double_checker;
+
+    public string carrot_seed_a1;
+    public string carrot_seed_a2;
+    public string carrot_seed_a3;
+
+    public string carrot_seed_b1;
+    public string carrot_seed_b2;
+    public string carrot_seed_b3;
+
+    public string carrot_seed_c1;
+    public string carrot_seed_c2;
+    public string carrot_seed_c3;
+
+    public string carrot_sap_a1;
+    public string carrot_sap_a2;
+    public string carrot_sap_a3;
+
+    public string carrot_sap_b1;
+    public string carrot_sap_b2;
+    public string carrot_sap_b3;
+
+    public string carrot_sap_c1;
+    public string carrot_sap_c2;
+    public string carrot_sap_c3;
+
+    public string carrot_plant_a1;
+    public string carrot_plant_a2;
+    public string carrot_plant_a3;
+
+    public string carrot_plant_b1;
+    public string carrot_plant_b2;
+    public string carrot_plant_b3;
+
+    public string carrot_plant_c1;
+    public string carrot_plant_c2;
+    public string carrot_plant_c3;
+
+    public int water_content_keeper_a1 = 500;
+    public int water_content_keeper_a2 = 500;
+    public int water_content_keeper_a3 = 500;
+
+    public int water_content_keeper_b1 = 500;
+    public int water_content_keeper_b2 = 500;
+    public int water_content_keeper_b3 = 500;
+
+    public int water_content_keeper_c1 = 500;
+    public int water_content_keeper_c2 = 500;
+    public int water_content_keeper_c3 = 500;
+
+    public int water_bucket = 0;
+
+    public void seedAmount(string seed)
+    {
+        int amount = Random.Range(1, 3);
+        for (int i = 0; i < amount; i++)
+        {
+            inventory.Add(seed);
+        }
+    }
+    
+    public void Harvest()
+    {
+        int inventory_test = inventory.Count;
+        if (nameList.Contains("all"))
+        {
+            if (carrot_plant_a1 == "yes")
+            {
+                carrot_plant_a1 = "no";
+                seedAmount("Carrot Seed");
+            }
+            if (carrot_plant_a2 == "yes")
+            {
+                carrot_plant_a2 = "no";
+                seedAmount("Carrot Seed");
+            }
+            if (carrot_plant_a3 == "yes")
+            {
+                carrot_plant_a3 = "no";
+                seedAmount("Carrot Seed");
+            }
+
+            if (carrot_plant_b1 == "yes")
+            {
+                carrot_plant_b1 = "no";
+                seedAmount("Carrot Seed");
+            }
+            if (carrot_plant_b2 == "yes")
+            {
+                carrot_plant_b2 = "no";
+                seedAmount("Carrot Seed");
+            }
+            if (carrot_plant_b3 == "yes")
+            {
+                carrot_plant_b3 = "no";
+                seedAmount("Carrot Seed");
+            }
+
+            if (carrot_plant_c1 == "yes")
+            {
+                carrot_plant_c1 = "no";
+                seedAmount("Carrot Seed");
+            }
+            if (carrot_plant_c2 == "yes")
+            {
+                carrot_plant_c2 = "no";
+                seedAmount("Carrot Seed");
+            }
+            if (carrot_plant_c3 == "yes")
+            {
+                carrot_plant_c3 = "no";
+                seedAmount("Carrot Seed");
+            }
+
+        }
+        if (nameList.Contains("a1"))
+        {
+            if (carrot_plant_a1 == "yes")
+            {
+                carrot_plant_a1 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at a1");
+            }
+        }
+        if (nameList.Contains("a2"))
+        {
+            if (carrot_plant_a2 == "yes")
+            {
+                carrot_plant_a2 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at a2");
+            }
+        }
+        if (nameList.Contains("a3"))
+        {
+            if (carrot_plant_a3 == "yes")
+            {
+                carrot_plant_a3 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at a3");
+            }
+        }
+
+
+        if (nameList.Contains("b1"))
+        {
+            if (carrot_plant_b1 == "yes")
+            {
+                carrot_plant_b1 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at b1");
+            }
+        }
+        if (nameList.Contains("b2"))
+        {
+            if (carrot_plant_b2 == "yes")
+            {
+                carrot_plant_b2 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at b2");
+            }
+        }
+        if (nameList.Contains("b3"))
+        {
+            if (carrot_plant_b3 == "yes")
+            {
+                carrot_plant_b3 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at b3");
+            }
+        }
+
+
+        if (nameList.Contains("c1"))
+        {
+            if (carrot_plant_c1 == "yes")
+            {
+                carrot_plant_c1 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at c1");
+            }
+        }
+        if (nameList.Contains("c2"))
+        {
+            if (carrot_plant_c2 == "yes")
+            {
+                carrot_plant_c2 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at c2");
+            }
+        }
+        if (nameList.Contains("c3"))
+        {
+            if (carrot_plant_c3 == "yes")
+            {
+                carrot_plant_c3 = "no";
+                seedAmount("Carrot Seed");
+            }
+            else
+            {
+                writeback_list.Add("There is nothing to harvest at c3");
+            }
+        }
+        writeback_list.Add("You harvested "+ (inventory.Count - inventory_test) + " carrot seeds");
+    }
+
+    public void Random_func()
+    {
+        if (carrot_sap_a1 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_a1 = "yes";
+                carrot_sap_a1 = "no";
+            }
+        }
+        if (carrot_seed_a1 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_a1 = "yes";
+                carrot_seed_a1 = "no";
+            }
+        }
+
+        if (carrot_sap_a2 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_a2 = "yes";
+                carrot_sap_a2 = "no";
+            }
+        }
+        if (carrot_seed_a2 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_a2 = "yes";
+                carrot_seed_a2 = "no";
+            }
+        }
+
+        if (carrot_sap_a3 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_a3 = "yes";
+                carrot_sap_a3 = "no";
+            }
+        }
+        if (carrot_seed_a3 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_a3 = "yes";
+                carrot_seed_a3 = "no";
+            }
+        }
+
+
+        if (carrot_sap_b1 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_b1 = "yes";
+                carrot_sap_b1 = "no";
+            }
+        }
+        if (carrot_seed_b1 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_b1 = "yes";
+                carrot_seed_b1 = "no";
+            }
+        }
+
+        if (carrot_sap_b2 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_b2 = "yes";
+                carrot_sap_b2 = "no";
+            }
+        }
+        if (carrot_seed_b2 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_b2 = "yes";
+                carrot_seed_b2 = "no";
+            }
+        }
+
+
+        if (carrot_sap_b3 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_b3 = "yes";
+                carrot_sap_b3 = "no";
+            }
+        }
+        if (carrot_seed_b3 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_b3 = "yes";
+                carrot_seed_b3 = "no";
+            }
+        }
+
+
+
+        if (carrot_sap_c1 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_c1 = "yes";
+                carrot_sap_c1 = "no";
+            }
+        }
+        if (carrot_seed_c1 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_c1 = "yes";
+                carrot_seed_c1 = "no";
+            }
+        }
+
+
+        if (carrot_sap_c2 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_c2 = "yes";
+                carrot_sap_c2 = "no";
+            }
+        }
+        if (carrot_seed_c2 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_c2 = "yes";
+                carrot_seed_c2 = "no";
+            }
+        }
+
+        if (carrot_sap_c3 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_plant_c3 = "yes";
+                carrot_sap_c3 = "no";
+            }
+        }
+        if (carrot_seed_c3 == "yes")
+        {
+            int grow = Random.Range(0, 100);
+            if (grow >= 50)
+            {
+                carrot_sap_c3 = "yes";
+                carrot_seed_c3 = "no";
+            }
+        }
+    }
+
+    void Plant()
+    {
+        if (nameList.Contains("carrot") || nameList.Contains("carrot") && nameList.Contains("seeds") || nameList.Contains("seed"))
+        {
+            if (inventory.Contains("Carrot Seed"))
+            {
+                for (int i = 0; i < nameList.Count; i++)
+                {
+
+                    if (nameList[i] == "a1" |
+                        nameList[i] == "a2" |
+                        nameList[i] == "a3" |
+                        nameList[i] == "b1" |
+                        nameList[i] == "b2" |
+                        nameList[i] == "b3" |
+                        nameList[i] == "c1" |
+                        nameList[i] == "c2" |
+                        nameList[i] == "c3")
+                    {
+                        carrot_seed_count += 1;
+                    }
+                }
+                if (inventory.Count - carrot_seed_count >= 0)
+                {
+                    for (int i = 0; i < carrot_seed_count; i++)
+                    {
+                        inventory.Remove("Carrot Seed");
+                    }
+                    if (nameList.Contains("a1"))
+                    {
+                        if (carrot_seed_a1 == "yes" || carrot_sap_a1 == "yes" || carrot_plant_a1 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at a1");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_a1 = "yes";
+                        }
+                    }
+                    if (nameList.Contains("a2"))
+                    {
+                        if (carrot_seed_a2 == "yes" || carrot_sap_a2 == "yes" || carrot_plant_a2 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at a2");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_a2 = "yes";
+                        }
+                    }
+                    if (nameList.Contains("a3"))
+                    {
+                        if (carrot_seed_a3 == "yes" || carrot_sap_a3 == "yes" || carrot_plant_a3 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at a3");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_a3 = "yes";
+                        }
+                    }
+
+
+                    if (nameList.Contains("b1"))
+                    {
+                        if (carrot_seed_b1 == "yes" || carrot_sap_b1 == "yes" || carrot_plant_b1 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at b1");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_b1 = "yes";
+                        }
+                    }
+                    if (nameList.Contains("b2"))
+                    {
+                        if (carrot_seed_b2 == "yes" || carrot_sap_b2 == "yes" || carrot_plant_b2 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at b2");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_b2 = "yes";
+                        }
+                    }
+                    if (nameList.Contains("b3"))
+                    {
+                        if (carrot_seed_b3 == "yes" || carrot_sap_b3 == "yes" || carrot_plant_b3 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at b3");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_b3 = "yes";
+                        }
+                    }
+
+
+                    if (nameList.Contains("c1"))
+                    {
+                        if (carrot_seed_c1 == "yes" || carrot_sap_c1 == "yes" || carrot_plant_c1 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at C1");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_c1 = "yes";
+                        }
+                    }
+                    if (nameList.Contains("c2"))
+                    {
+                        if (carrot_seed_c2 == "yes" || carrot_sap_c2 == "yes" || carrot_plant_c2 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at C2");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_c2 = "yes";
+                        }
+                    }
+                    if (nameList.Contains("c3"))
+                    {
+                        if (carrot_seed_c3 == "yes" || carrot_sap_c3 == "yes" || carrot_plant_c3 == "yes")
+                        {
+                            writeback_list.Add("You've already planted at c3");
+                            inventory.Add("Carrot Seed");
+                        }
+                        else
+                        {
+                            carrot_seed_c3 = "yes";
+                        }
+                    }
+                    carrot_seed_count = 0;
+                }
+                else
+                {
+                    writeback_list.Add("You do not have enough carrot seeds");
+                }
+            }
+            else
+            {
+                writeback_list.Add("You've run out of carrot seeds");
+            }
+        }
+        else
+        {
+            writeback_list.Add("You have to input what type of seed you want");
+        }
+        if (!nameList.Contains("all"))
+        {
+            if (!nameList.Contains("a1")
+            && !nameList.Contains("a2")
+            && !nameList.Contains("a3")
+            && !nameList.Contains("b1")
+            && !nameList.Contains("b2")
+            && !nameList.Contains("b3")
+            && !nameList.Contains("c1")
+            && !nameList.Contains("c2")
+            && !nameList.Contains("c3")
+            )
+            {
+                writeback_list.Add("That isn't a place on the board");
+                if (nameList.Contains("carrot"))
+                {
+                    inventory.Add("Carrot Seed");
+                }
+            }
+        }
+    }
+
+
+    void rain()
+    {
+        water_content_keeper_a1 += 2;
+        water_content_keeper_a2 += 2;
+        water_content_keeper_a3 += 2;
+
+        water_content_keeper_b1 += 2;
+        water_content_keeper_b2 += 2;
+        water_content_keeper_b3 += 2;
+
+        water_content_keeper_c1 += 2;
+        water_content_keeper_c2 += 2;
+        water_content_keeper_c3 += 2;
+        if (water_bucket < 1000)
+        {
+            water_bucket += 5;
+        }
+    }
+
+    void Water()
+    {
+        int amount = nameList.Count;
+        int water_test = water_bucket;
+        water_test -= (50 * (amount - 1));
+        if (water_test <= 0)
+        {
+            if (amount > 2)
+            {
+                writeback_list.Add("Sorry you can't do that as you have do not have enough water");
+            }
+            else
+            {
+                writeback_list.Add("Sorry you can't do that as you have run out of water" + "\n" + "You need to have at least 5% water in your bucket");
+            }
+        }
+        else
+        {
+            water_bucket -= (50 * (amount - 1));
+            if (nameList.Contains("a1"))
+            {
+                water_content_keeper_a1 += water_bucket;
+            }
+            if (nameList.Contains("a2"))
+            {
+                water_content_keeper_a2 += water_bucket;
+            }
+            if (nameList.Contains("a3"))
+            {
+                water_content_keeper_a3 += water_bucket;
+            }
+            if (nameList.Contains("b1"))
+            {
+                water_content_keeper_b1 += water_bucket;
+            }
+            if (nameList.Contains("b2"))
+            {
+                water_content_keeper_b2 += water_bucket;
+            }
+            if (nameList.Contains("b3"))
+            {
+                water_content_keeper_b3 += water_bucket;
+            }
+            if (nameList.Contains("c1"))
+            {
+                water_content_keeper_c1 += water_bucket;
+            }
+            if (nameList.Contains("c2"))
+            {
+                water_content_keeper_c2 += water_bucket;
+            }
+            if (nameList.Contains("c3"))
+            {
+                water_content_keeper_c3 += water_bucket;
+            }
+            if (nameList.Contains("all"))
+            {
+                water_content_keeper_a1 += water_bucket;
+                water_content_keeper_a2 += water_bucket;
+                water_content_keeper_a3 += water_bucket;
+
+                water_content_keeper_b1 += water_bucket;
+                water_content_keeper_b2 += water_bucket;
+                water_content_keeper_b3 += water_bucket;
+
+                water_content_keeper_c1 += water_bucket;
+                water_content_keeper_c2 += water_bucket;
+                water_content_keeper_c3 += water_bucket;
+            }
+            if (!nameList.Contains("a1")
+                && !nameList.Contains("a2")
+                && !nameList.Contains("a3")
+                && !nameList.Contains("b1")
+                && !nameList.Contains("b2")
+                && !nameList.Contains("b3")
+                && !nameList.Contains("c1")
+                && !nameList.Contains("c2")
+                && !nameList.Contains("c3")
+                )
+            {
+                writeback_list.Add("That isn't a place on the board");
+            }
+        }
+    }
+
+    public void Start()
+    {
+        water_bucket += 500;
+        for (int counter = 0; counter < 9; counter++)
+        {
+            inventory.Add("Carrot Seed");
+        }
+
+        InvokeRepeating("Random_func", 50f, 50f);
+    }
+
 
     public void Update()
     {
+
+        int hour = GameObject.Find("TimerScript").GetComponent<timekeeper>().hour;
+
+        //water decrease section
+        timer += Time.deltaTime;
+        float seconds = timer;
+        if (seconds > test)
+        {
+            test += 1;
+
+            water_content_keeper_a1 -= 1;
+            water_content_keeper_a2 -= 1;
+            water_content_keeper_a3 -= 1;
+
+            water_content_keeper_b1 -= 1;
+            water_content_keeper_b2 -= 1;
+            water_content_keeper_b3 -= 1;
+
+            water_content_keeper_c1 -= 1;
+            water_content_keeper_c2 -= 1;
+            water_content_keeper_c3 -= 1;
+
+            string rainchecker = GameObject.Find("Weather").GetComponent<Weather>().raintrigger;
+            if (rainchecker == "yes")
+            {
+                rain();
+            }
+        }
+        else
+        {
+            seconds += 1;
+        }
+
+
+
+        //If enter key is pressed
         if (Input.GetKeyDown(KeyCode.Return))
         {
+
+
             //Gain input and reset most things
             nameList.Clear();
             user_name.text = "";
             writeback_list.Add(user_inputfield.text);
-            string checker = user_inputfield.text;
+            checker = user_inputfield.text;
             user_inputfield.text = "";
 
 
             //Make sure the input is lowercase
             checker = checker.ToLower();
+
+            callBackList.Add(checker);
+
+            num_call = callBackList.Count;
+            double_checker = num_call;
 
             //Split the input into a list
             var text = checker;
@@ -44,52 +819,111 @@ public class SetWordController : MonoBehaviour
             }
 
 
-            if (nameList[0] == ("help"))
-            {
-                writeback_list.Add("\n" + "To plant, example: Plant A1 B3" + "\n" + "To water, example: Water A3 C2" + "\n" + "To harvest, example: Harvest A2 B1" + "\n" + "\n");
-                //user_name.text = ("To plant, example: Plant A1 B3");
-                //user_name.text = ("To water, example: Water A3 C2" + "\n");
-                //user_name.text = ("To harvest, example: Harvest A2 B1" + "\n");
-
-            }
-
-            list_num = nameList.Count;
-            //If the player has selected water, run this
+            //If the input is only one word
+            int list_num = nameList.Count;
             if (list_num == 1)
             {
-                if (nameList[0] == "water")
+                if (nameList.Contains("water"))
                 {
                     writeback_list.Add("Please also enter where you'd like to perform the function, Example: Harvest A1 B3");
                 }
-                if (nameList[0] == "harvest")
+                if (nameList.Contains("harvest"))
                 {
                     writeback_list.Add("Please also enter where you'd like to perform the function, Example: Harvest A1 B3");
                 }
-                if (nameList[0] == "plant")
+                if (nameList.Contains("plant"))
                 {
                     writeback_list.Add("Please also enter where you'd like to perform the function, Example: Harvest A1 B3");
+                }
+                if (nameList.Contains("inventory"))
+                {
+                    int carrot_seed_count = 0;
+                    for (int i = 0; i < inventory.Count; i++)
+                    {
+                        if (inventory[i] == "Carrot Seed")
+                        {
+                            carrot_seed_count += 1;
+                        }
+                    }
+                    if (inventory.Contains("Carrot Seed"))
+                    {
+                        writeback_list.Add("Carrot Seeds: X" + carrot_seed_count);
+                    }
+                    else
+                    {
+                        writeback_list.Add("You contain nothing in your inventory");
+                    }
                 }
 
             }
             else
             {
-                if (nameList[0] == ("water"))
+                if (nameList.Contains("plant"))
                 {
-                    print("You selected water");
+                    Plant();
+                }
+                if (nameList.Contains("harvest"))
+                {
+                    Harvest();
+                }
+                if (nameList.Contains("water"))
+                {
+                    Water();
+                }
+                if (nameList.Contains("inventory"))
+                {
+                    for (int i = 0; i < inventory.Count; i++)
+                    {
+                        if (inventory[i] == "Carrot Seed")
+                        {
+                            carrot_seed_count += 1;
+                        }
+                    }
+                    if (inventory.Contains("Carrot Seed"))
+                    {
+                        writeback_list.Add("Carrot Seeds: X" + carrot_seed_count);
+                    }
                 }
             }
-     
-
+            if (nameList.Contains("clear"))
+            {
+                writeback_list.Clear();
+            }
 
             //Add to list and print new list on the command area
             foreach (var item in writeback_list)
             {
                 user_name.text += item.ToString() + "\n";
             }
+
             //Checking so it wont go over the input area
-            if (writeback_list.Count >= 15)
+            if (writeback_list.Count >= 18)
             {
                 writeback_list.Remove(writeback_list[0]);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (double_checker == 0)
+            {
+                user_inputfield.text = callBackList[double_checker];
+            }
+            else
+            {
+                double_checker -= 1;
+                user_inputfield.text = callBackList[double_checker];
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (double_checker != num_call)
+            {
+                user_inputfield.text = callBackList[double_checker];
+                double_checker += 1;
+            }
+            else
+            {
+                user_inputfield.text = "";
             }
         }
     }
